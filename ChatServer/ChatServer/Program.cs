@@ -8,6 +8,34 @@ namespace ChatServer
 {
     class Program
     {
+        private static bool serverRunning = false;
+
+        static void Main(string[] args)
+        {
+            ShowHeader();
+
+            Console.WriteLine();
+            Console.WriteLine("Press [S] to start server. Press [Q] to stop server. Press [E] to exit");
+
+            ConsoleKeyInfo cki = Console.ReadKey(true);
+            while (cki.Key != ConsoleKey.E)
+            {
+                if (cki.Key == ConsoleKey.S)
+                {
+                    StartServer();
+                }
+                else if (cki.Key == ConsoleKey.Q)
+                {
+                    StopServer();
+                }
+                else
+                {
+                    Console.WriteLine("You have pressed wrong key");
+                }
+                cki = Console.ReadKey(true);
+            } 
+        }
+
         public static void ShowHeader()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
@@ -19,11 +47,36 @@ namespace ChatServer
             Console.WriteLine("  \\/_____/   \\/_/\\/_/   \\/_/\\/_/     \\/_/");
 
             Console.ResetColor();
+
         }
-        static void Main(string[] args)
+
+        public static void StartServer()
         {
-            ShowHeader();
-            Console.ReadKey();
+            if (serverRunning == true)
+            {
+                Console.WriteLine("Server is already running");
+            }
+            else
+            {                               
+                serverRunning = true;
+
+                Console.WriteLine("The sever has been started");                
+            }
         }
+
+        public static void StopServer()
+        {
+            if (serverRunning == true)
+            {
+                serverRunning = false;
+
+                Console.WriteLine("Server has been stopped");
+            }
+            else
+            {
+                Console.WriteLine("Server is stopped already");
+            }
+        }
+
     }
 }
