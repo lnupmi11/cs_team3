@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 
 namespace ChatServer
 {
     class Program
     {
         private static bool serverRunning = false;
+
+        private static TcpListener listener;
 
         static void Main(string[] args)
         {
@@ -57,10 +60,15 @@ namespace ChatServer
                 Console.WriteLine("Server is already running");
             }
             else
-            {                               
-                serverRunning = true;
+            {
 
-                Console.WriteLine("The sever has been started");                
+                //listener = new TcpListener(IPAddress, port);
+
+                serverRunning = true;
+                
+                Console.WriteLine("The sever has been started");
+
+            
             }
         }
 
@@ -70,6 +78,8 @@ namespace ChatServer
             {
                 serverRunning = false;
 
+                //listener.Stop();
+
                 Console.WriteLine("Server has been stopped");
             }
             else
@@ -78,5 +88,28 @@ namespace ChatServer
             }
         }
 
+        public static void StartListening()
+        {
+            listener.Start();
+
+            while (serverRunning == true)
+            {            
+                TcpClient client = listener.AcceptTcpClient(); 
+                             
+            }
+        }
+
+        public static void HandleNewSession(object data)
+        {
+            TcpClient client = (TcpClient)data;
+
+            NetworkStream stream = client.GetStream();
+
+            if (stream.CanWrite && stream.CanRead)
+            {
+               //get a stream object for read and write
+               //connect to some class in Client
+            }
+        }
     }
 }
