@@ -15,9 +15,9 @@ namespace ChatServer
 
         static void Main(string[] args)
         {
-            //Server server = new Server();
-            //server.Start();
-            //server.Stop();
+            Server server = new Server();
+            server.Start();
+            server.Stop();
 
             ShowHeader();
 
