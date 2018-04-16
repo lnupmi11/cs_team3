@@ -22,11 +22,14 @@ namespace ChatClient
         }
         static void Main(string[] args)
         {
-            Client client = new Client();
-            client.Connect();
-            client.SendMessage("hello!");
-
             ShowHeader();
+            Console.Write("Input name: ");
+            string userName = Console.ReadLine();
+            User user = new User { UserName = userName };
+
+            Client client = new Client();
+            client.Connect(user);
+            
             Console.ReadKey();
         }
     }
