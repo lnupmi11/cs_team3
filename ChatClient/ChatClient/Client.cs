@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ChatClient.Configuration;
 
 namespace ChatClient
 {
@@ -13,15 +15,21 @@ namespace ChatClient
     {
         private TcpClient tcpClient;
         private NetworkStream stream;
+        private ConfigurationProvider configurationProvider;
+
+        public Client()
+        {
+            configurationProvider= new ConfigurationProvider();
+        }
 
         public void Connect(User user)
         {
             try
             {
                 tcpClient = new TcpClient();
-                IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-                int port = 1234;
-                tcpClient.Connect(ipAddress, port);
+                ConfigurationModel configurationModel=configurationProvider.Get();
+                IPAddress ipAddress = IPAddress.Parse(configurationModel.IpAddress);
+                tcpClient.Connect(ipAddress, configurationModel.Port);
                 stream = tcpClient.GetStream();
 
                 Thread getMessageThread = new Thread(new ThreadStart(GetMessage));

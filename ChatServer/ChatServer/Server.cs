@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ChatServer.Configuration;
 
 namespace ChatServer
 {
@@ -13,12 +14,18 @@ namespace ChatServer
     {
         private TcpListener tcpListener;
         private List<Client> clients = new List<Client>();
+        private ConfigurationProvider configurationProvider;
+
+        public Server()
+        {
+            configurationProvider=new ConfigurationProvider();
+        }
 
         public void Start()
         {
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-            int port = 1234;
-            tcpListener = new TcpListener(ipAddress, port);
+            ConfigurationModel configurationModel = configurationProvider.Get();
+            IPAddress ipAddress = IPAddress.Parse(configurationModel.IpAddress);
+            tcpListener = new TcpListener(ipAddress, configurationModel.Port);
             tcpListener.Start();
             Console.WriteLine("Server started.");
 
