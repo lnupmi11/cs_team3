@@ -50,6 +50,10 @@ namespace ChatClient
             while (true)
             {
                 string message = Console.ReadLine();
+                if (message == "exit")
+                {
+                    Environment.Exit(0);
+                }
                 SendMessage(message);
             }
         }
