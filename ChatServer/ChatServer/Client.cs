@@ -35,9 +35,7 @@ namespace ChatServer
                     try
                     {
                         message = GetMessage();
-                        message = $"{UserName}: {message}";
-                        Console.WriteLine(message);
-                        server.SendMessageToAllClients(message, this.Id);
+                        HandleMessage(message);
                     }
                     catch
                     {
@@ -57,6 +55,38 @@ namespace ChatServer
                 server.DeleteConnection(this.Id);
                 Close();
             }
+        }
+
+        private void HandleMessage(string message)
+        {
+            bool isPrivateMessage = message.StartsWith("@");
+            if (isPrivateMessage)
+            {
+                Console.WriteLine($"{UserName}: {message}");
+                HandlePrivateMassage(UserName, message);
+            }
+            else
+            {
+                message = $"{UserName}: {message}";
+                Console.WriteLine(message);
+                server.SendMessageToAllClients(message, this.Id);
+            }
+        }
+
+        private void HandlePrivateMassage(string username, string message)
+        {
+
+            string[] parts = message.Split(new[] { ' ' }, 2);
+            string clientName = parts[0].Remove(0, 1);
+            if (parts.Length == 1)
+            {
+                message = $"{UserName}:";
+            }
+            else
+            {
+                message = $"{UserName}: {parts[1]}";
+            }
+            server.SendMessageToClient(message, clientName, this.Id);
         }
 
         private string GetMessage()

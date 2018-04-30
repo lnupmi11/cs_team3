@@ -17,7 +17,7 @@ namespace ChatServer
 
         public Server()
         {
-            configurationProvider=new ConfigurationProvider();
+            configurationProvider = new ConfigurationProvider();
         }
 
         public void Start()
@@ -45,14 +45,30 @@ namespace ChatServer
                 Console.WriteLine(a.UserName);
             }
         }
-        
 
-        public void SendMessageToAllClients(string message, string id)
+        public void SendMessageToClient(string message, string clientName, string senderId)
+        {
+            byte[] data;
+            Client client;
+            if (Exist(clientName))
+            {
+                data = Encoding.Unicode.GetBytes(message);
+                client = clients.First(c => c.UserName == clientName);
+            }
+            else
+            {
+                data = Encoding.Unicode.GetBytes("Wrong destination user name");
+                client = clients.First(c => c.Id == senderId);
+            }
+            client.Stream.Write(data, 0, data.Length);
+        }
+
+        public void SendMessageToAllClients(string message, string senderId)
         {
             byte[] data = Encoding.Unicode.GetBytes(message);
             for (int i = 0; i < clients.Count; i++)
             {
-                if (clients[i].Id != id)
+                if (clients[i].Id != senderId)
                 {
                     clients[i].Stream.Write(data, 0, data.Length);
                 }
@@ -61,7 +77,7 @@ namespace ChatServer
 
         public bool Exist(string userName)
         {
-            bool exist = clients.Any(c => c.UserName == userName);            
+            bool exist = clients.Any(c => c.UserName == userName);
 
             return exist;
         }
