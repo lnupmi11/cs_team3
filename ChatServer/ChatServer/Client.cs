@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatServer
 {
@@ -12,6 +9,7 @@ namespace ChatServer
         private TcpClient tcpClient;
         private Server server;
         public string Id { get; private set; }
+        public string UserName { get; private set; }
         public NetworkStream Stream { get; private set; }
 
         public Client(TcpClient tcpClient, Server server)
@@ -27,9 +25,9 @@ namespace ChatServer
             {
                 Stream = tcpClient.GetStream();
                 string message = GetMessage();
-                string userName = message;
+                UserName = message;
 
-                message = userName + " join to chat";
+                message = UserName + " join to chat";
                 server.SendMessageToAllClients(message, this.Id);
                 Console.WriteLine(message);
                 while (true)
@@ -37,13 +35,13 @@ namespace ChatServer
                     try
                     {
                         message = GetMessage();
-                        message = $"{userName}: {message}";
+                        message = $"{UserName}: {message}";
                         Console.WriteLine(message);
                         server.SendMessageToAllClients(message, this.Id);
                     }
                     catch
                     {
-                        message = $"{userName}: left the chat";
+                        message = $"{UserName}: left the chat";
                         Console.WriteLine(message);
                         server.SendMessageToAllClients(message, this.Id);
                         break;

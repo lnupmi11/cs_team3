@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
+using System.Threading;
 
 namespace ChatServer
 {
@@ -12,7 +8,48 @@ namespace ChatServer
         static void Main(string[] args)
         {
             Server server = new Server();
-            server.Start();
+            Thread thread = new Thread(new ThreadStart(server.Start));
+            thread.Start();
+            ListenCommands(server);
+        }
+
+        public static void ListenCommands(Server server)
+        {
+            while (true)
+            {
+                string line = Console.ReadLine();
+                if (line == "show client list")
+                {
+                    server.ShowClientList();
+                }
+                else if (line == "kill client")
+                {
+                    KillClient(server);
+
+                }
+                else if (line == "exit")
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine("Not exist such command");
+                }
+            }
+        }
+
+        public static void KillClient(Server server)
+        {
+            Console.WriteLine("Enter user name: ");
+            string userName = Console.ReadLine();
+            if (server.Exist(userName))
+            {
+                server.DeleteConnection(userName);
+            }
+            else
+            {
+                Console.WriteLine("Not exist client with this user name");
+            }
         }
 
         public static void ShowHeader()

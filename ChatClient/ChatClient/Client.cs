@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿using ChatClient.Configuration;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using ChatClient.Configuration;
 
 namespace ChatClient
 {
@@ -19,7 +15,7 @@ namespace ChatClient
 
         public Client()
         {
-            configurationProvider= new ConfigurationProvider();
+            configurationProvider = new ConfigurationProvider();
         }
 
         public void Connect(User user)
@@ -27,7 +23,7 @@ namespace ChatClient
             try
             {
                 tcpClient = new TcpClient();
-                ConfigurationModel configurationModel=configurationProvider.Get();
+                ConfigurationModel configurationModel = configurationProvider.Get();
                 IPAddress ipAddress = IPAddress.Parse(configurationModel.IpAddress);
                 tcpClient.Connect(ipAddress, configurationModel.Port);
                 stream = tcpClient.GetStream();
@@ -51,7 +47,7 @@ namespace ChatClient
         public void ReadMessage()
         {
             Console.WriteLine("Input message:");
-            while(true)
+            while (true)
             {
                 string message = Console.ReadLine();
                 SendMessage(message);
@@ -67,7 +63,7 @@ namespace ChatClient
 
         public void GetMessage()
         {
-            while(true)
+            while (true)
             {
                 try
                 {
@@ -84,9 +80,9 @@ namespace ChatClient
                     string message = builder.ToString();
                     Console.WriteLine(message);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Connection lost!"); 
+                    Console.WriteLine("Connection lost!");
                     Console.ReadLine();
                     Disconnect();
                 }

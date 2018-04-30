@@ -1,12 +1,11 @@
-﻿using System;
+﻿using ChatServer.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using ChatServer.Configuration;
 
 namespace ChatServer
 {
@@ -39,6 +38,15 @@ namespace ChatServer
             }
         }
 
+        public void ShowClientList()
+        {
+            foreach (Client a in clients)
+            {
+                Console.WriteLine(a.UserName);
+            }
+        }
+        
+
         public void SendMessageToAllClients(string message, string id)
         {
             byte[] data = Encoding.Unicode.GetBytes(message);
@@ -51,9 +59,16 @@ namespace ChatServer
             }
         }
 
-        public void DeleteConnection(string id)
+        public bool Exist(string userName)
         {
-            Client client = clients.FirstOrDefault(c => c.Id == id);
+            bool exist = clients.Any(c => c.UserName == userName);            
+
+            return exist;
+        }
+
+        public void DeleteConnection(string userName)
+        {
+            Client client = clients.FirstOrDefault(c => c.UserName == userName);
             if (client != null)
             {
                 clients.Remove(client);
