@@ -46,7 +46,7 @@ namespace ChatClient
 
         public void ReadMessage()
         {
-            Console.WriteLine("Input message:");
+            Console.WriteLine("Input message (if you want to sent private message add @username):");
             while (true)
             {
                 string message = Console.ReadLine();

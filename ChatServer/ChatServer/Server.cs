@@ -11,7 +11,7 @@ namespace ChatServer
 {
     public class Server
     {
-        private TcpListener tcpListener;
+          private TcpListener tcpListener;
         private List<Client> clients = new List<Client>();
         private ConfigurationProvider configurationProvider;
 
@@ -88,6 +88,7 @@ namespace ChatServer
             if (client != null)
             {
                 clients.Remove(client);
+                client.Close();
             }
         }
 

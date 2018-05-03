@@ -15,29 +15,33 @@ namespace ChatServer
 
         public static void ListenCommands(Server server)
         {
-            while (true)
+            Console.WriteLine();
+            Console.WriteLine("Press [S] to show client list. Press [K] to kill client. Press [E] to exit");
+            ConsoleKeyInfo cki = Console.ReadKey(true);
+            while (cki.Key != ConsoleKey.F)
             {
-                string line = Console.ReadLine();
-                if (line == "show client list")
+                if (cki.Key == ConsoleKey.S)
                 {
+                    Console.WriteLine("List of clients:");
                     server.ShowClientList();
                 }
-                else if (line == "kill client")
+                else if (cki.Key == ConsoleKey.K)
                 {
+                    Console.WriteLine("Killing client:");
                     KillClient(server);
-
                 }
-                else if (line == "exit")
-                {
+                else if (cki.Key == ConsoleKey.E)
+                {             
                     Environment.Exit(0);
                 }
                 else
                 {
-                    Console.WriteLine("Not exist such command");
+                    Console.WriteLine("You have pressed wrong key");
                 }
-            }
+                cki = Console.ReadKey(true);
+            }          
         }
-
+        
         public static void KillClient(Server server)
         {
             Console.WriteLine("Enter user name: ");
@@ -45,6 +49,7 @@ namespace ChatServer
             if (server.Exist(userName))
             {
                 server.DeleteConnection(userName);
+                Console.WriteLine("Client {0} has been deleted!",userName);
             }
             else
             {
