@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using log4net;
+using log4net.Config;
 
 namespace ChatServer
 {
@@ -7,6 +9,7 @@ namespace ChatServer
     {
         static void Main(string[] args)
         {
+            Logger.InitLogger();
             Server server = new Server();
             Thread thread = new Thread(new ThreadStart(server.Start));
             thread.Start();

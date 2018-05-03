@@ -28,6 +28,7 @@ namespace ChatServer
                 UserName = message;
 
                 message = UserName + " join to chat";
+                Logger.Log.Info(message);
                 server.SendMessageToAllClients(message, this.Id);
                 Console.WriteLine(message);
                 while (true)
@@ -40,6 +41,7 @@ namespace ChatServer
                     catch
                     {
                         message = $"{UserName}: left the chat";
+                        Logger.Log.Info(message);
                         Console.WriteLine(message);
                         server.SendMessageToAllClients(message, this.Id);
                         break;
@@ -48,6 +50,7 @@ namespace ChatServer
             }
             catch (Exception e)
             {
+                Logger.Log.Error(e.Message);
                 Console.WriteLine(e.Message);
             }
             finally
@@ -60,17 +63,17 @@ namespace ChatServer
         private void HandleMessage(string message)
         {
             bool isPrivateMessage = message.StartsWith("@");
+            string consoleMessage = $"{UserName}: {message}";
             if (isPrivateMessage)
             {
-                Console.WriteLine($"{UserName}: {message}");
                 HandlePrivateMassage(UserName, message);
             }
             else
             {
-                message = $"{UserName}: {message}";
-                Console.WriteLine(message);
-                server.SendMessageToAllClients(message, this.Id);
+                server.SendMessageToAllClients(consoleMessage, this.Id);
             }
+            Console.WriteLine(consoleMessage);
+            Logger.Log.Info(consoleMessage);
         }
 
         private void HandlePrivateMassage(string username, string message)

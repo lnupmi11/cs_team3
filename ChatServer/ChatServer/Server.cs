@@ -27,6 +27,7 @@ namespace ChatServer
             tcpListener = new TcpListener(ipAddress, configurationModel.Port);
             tcpListener.Start();
             Console.WriteLine("Server started.");
+            Logger.Log.Info("Server started.");
 
             while (true)
             {
@@ -99,6 +100,7 @@ namespace ChatServer
                 tcpListener.Stop();
             }
             Console.WriteLine("Server stoped.");
+            Logger.Log.Info("Server stoped.");
         }
     }
 }
