@@ -27,11 +27,12 @@ namespace ChatClient
                 IPAddress ipAddress = IPAddress.Parse(configurationModel.IpAddress);
                 tcpClient.Connect(ipAddress, configurationModel.Port);
                 stream = tcpClient.GetStream();
-
+                
+                ReadUserName();
+            
                 Thread getMessageThread = new Thread(new ThreadStart(GetMessage));
                 getMessageThread.Start();
-                Console.WriteLine($"Wellcome, {user.UserName}");
-                SendMessage(user.UserName);
+
                 ReadMessage();
             }
             catch (Exception ex)
@@ -42,6 +43,26 @@ namespace ChatClient
             {
                 Disconnect();
             }
+        }
+
+        public void ReadUserName()
+        {
+            bool userNameIsOk;
+            string name;
+            do
+            {
+                Console.WriteLine("Input name: ");
+
+                name = Console.ReadLine();
+                SendMessage(name);
+                string message = ReadMessageFromServer();
+                userNameIsOk = message == "200";
+                if (!userNameIsOk)
+                {
+                    Console.WriteLine("Wrong name, such user name already exist");
+                }
+            } while (!userNameIsOk);
+            Console.WriteLine($"Welcome, {name}");
         }
 
         public void ReadMessage()
@@ -65,23 +86,28 @@ namespace ChatClient
             stream.Write(data, 0, data.Length);
         }
 
+        public string ReadMessageFromServer()
+        {
+            byte[] data = new byte[8];
+            StringBuilder builder = new StringBuilder();
+            int bytes = 0;
+            do
+            {
+                bytes = stream.Read(data, 0, data.Length);
+                builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+            }
+            while (stream.DataAvailable);
+
+            return builder.ToString();
+        }
+
         public void GetMessage()
         {
             while (true)
             {
                 try
                 {
-                    byte[] data = new byte[64];
-                    StringBuilder builder = new StringBuilder();
-                    int bytes = 0;
-                    do
-                    {
-                        bytes = stream.Read(data, 0, data.Length);
-                        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                    }
-                    while (stream.DataAvailable);
-
-                    string message = builder.ToString();
+                    string message = ReadMessageFromServer();
                     Console.WriteLine(message);
                 }
                 catch (Exception e)

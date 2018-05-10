@@ -24,10 +24,8 @@ namespace ChatServer
             try
             {
                 Stream = tcpClient.GetStream();
-                string message = GetMessage();
-                UserName = message;
-
-                message = UserName + " join to chat";
+                HandleUserName();
+                string message = UserName + " join to chat";
                 Logger.Log.Info(message);
                 server.SendMessageToAllClients(message, this.Id);
                 Console.WriteLine(message);
@@ -60,6 +58,25 @@ namespace ChatServer
             }
         }
 
+        private void HandleUserName()
+        {
+            string message = GetMessage();
+            bool exist = server.Exist(message);
+            if (exist)
+            {
+                do
+                {
+                    byte[] data = Encoding.Unicode.GetBytes("409");
+                    Stream.Write(data, 0, data.Length);
+                    message = GetMessage();
+                    exist = server.Exist(message);
+                } while (exist);
+            }
+            byte[] successfulMassage = Encoding.Unicode.GetBytes("200");
+            Stream.Write(successfulMassage, 0, successfulMassage.Length);
+            UserName = message;
+        }
+
         private void HandleMessage(string message)
         {
             bool isPrivateMessage = message.StartsWith("@");
@@ -73,7 +90,7 @@ namespace ChatServer
                 server.SendMessageToAllClients(consoleMessage, this.Id);
             }
             Console.WriteLine(consoleMessage);
-            Logger.Log.Info(consoleMessage);
+            //Logger.Log.Info(consoleMessage);
         }
 
         private void HandlePrivateMassage(string username, string message)

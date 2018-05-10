@@ -19,9 +19,7 @@ namespace ChatClient
         static void Main(string[] args)
         {
             ShowHeader();
-            Console.Write("Input name: ");
-            string userName = Console.ReadLine();
-            User user = new User { UserName = userName };
+            User user = new User();
 
             Client client = new Client();
             client.Connect(user);
