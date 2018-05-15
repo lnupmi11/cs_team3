@@ -7,7 +7,7 @@ namespace RunExe
     {
         static void Main()
         {
-            Console.WriteLine("Enter n");
+            Console.WriteLine("Enter number of customers:");
             int size = Convert.ToInt32(Console.ReadLine());
             for (int i = 0; i < size; i++)
             {
