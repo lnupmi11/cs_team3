@@ -25,7 +25,7 @@ namespace ChatServer
             {
                 Stream = tcpClient.GetStream();
                 HandleUserName();
-                string message = UserName + " join to chat";
+                string message = UserName + " joined to chat";
                 Logger.Log.Info(message);
                 server.SendMessageToAllClients(message, this.Id);
                 Console.WriteLine(message);

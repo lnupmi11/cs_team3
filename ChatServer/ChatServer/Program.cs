@@ -39,7 +39,7 @@ namespace ChatServer
                 }
                 else
                 {
-                    Console.WriteLine("You have pressed wrong key");
+                    Console.WriteLine("You have pressed the wrong key");
                 }
                 cki = Console.ReadKey(true);
             }          
@@ -56,7 +56,7 @@ namespace ChatServer
             }
             else
             {
-                Console.WriteLine("Not exist client with this user name");
+                Console.WriteLine("Client with this user name does not exist");
             }
         }
 
