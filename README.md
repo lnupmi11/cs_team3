@@ -6,9 +6,9 @@
 *It can be used to communicate with other people.*
 *Built-in support just for text.*
 
-## Authors:##
-*Andriana Shcherbak
-*Natalia Pachva
-*Olya Pastushchak
-*Mariia Hapatyn
-*Bohdan Bobelyak 
+## Authors:
+* Andriana Shcherbak
+* Natalia Pachva
+* Olya Pastushchak
+* Mariia Hapatyn
+* Bohdan Bobelyak 
