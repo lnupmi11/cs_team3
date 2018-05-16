@@ -59,7 +59,7 @@ namespace ChatClient
                 userNameIsOk = message == "200";
                 if (!userNameIsOk)
                 {
-                    Console.WriteLine("Wrong name, such user name already exist");
+                    Console.WriteLine("The wrong name, such username already exists");
                 }
             } while (!userNameIsOk);
             Console.WriteLine($"Welcome, {name}");
@@ -112,7 +112,7 @@ namespace ChatClient
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Connection lost!");
+                    Console.WriteLine("The connection is lost!");
                     Console.ReadLine();
                     Disconnect();
                 }
