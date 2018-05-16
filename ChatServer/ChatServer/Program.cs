@@ -52,7 +52,7 @@ namespace ChatServer
             if (server.Exist(userName))
             {
                 server.DeleteConnection(userName);
-                Console.WriteLine("Client {0} has been deleted!",userName);
+                Console.WriteLine($"Client {userName} has been deleted!");
             }
             else
             {
